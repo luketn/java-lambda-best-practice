@@ -155,4 +155,40 @@ Output: Test lambda ran successfully. Cold! Total time ~2034ms (s3 init time 903
 (compilation 0 was awful when deployed)
 
 Maybe 1vcpu will be as efficient?
-A: No, still slower. Trying 2gbs.
+A: No, still slower. Trying 2gbs.  
+
+2gbs was still slower. Back to 2 vCPUs, keeping the tiered compilation option.
+
+
+### SnapStart (with primer)
+I previously tried SnapStart and found no real benefits.  
+However reading this:
+https://dev.to/aws-builders/aws-snapstart-part-26-measuring-cold-and-warm-starts-with-java-21-using-different-garbage-collection-algorithms-8h3
+
+Got me on to the idea of 'priming' the lambda during the SnapStart process before the image is taken. 
+
+I've now done so. The results are pretty awesome:
+
+``` 2 vCPUs (3,538MB RAM), SnapStart Enabled, Tiered Compilation (stop at level 1), Prime Lambda: - 938ms
+2025-05-21T14:26:55.893Z
+RESTORE_START Runtime Version: java:21.v38 Runtime Version ARN: arn:aws:lambda:ap-southeast-2::runtime:81e4ff5669ca00936ae2ebcd7e3ee4b820d9f1dec101bbabbb706dc9e1481298
+2025-05-21T14:26:56.655Z
+Restored SnapStart snapshot.
+2025-05-21T14:26:56.661Z
+RESTORE_REPORT Restore Duration: 789.64 ms
+2025-05-21T14:26:56.665Z
+START RequestId: 5b321b10-9dfa-4a05-b900-c45b96303238 Version: 23
+2025-05-21T14:26:56.814Z
+END RequestId: 5b321b10-9dfa-4a05-b900-c45b96303238
+2025-05-21T14:26:56.814Z
+REPORT RequestId: 5b321b10-9dfa-4a05-b900-c45b96303238	Duration: 149.53 ms	Billed Duration: 313 ms	Memory Size: 3538 MB	Max Memory Used: 163 MB	Restore Duration: 789.64 ms	Billed Restore Duration: 163 ms	
+
+REPORT RequestId: 5b321b10-9dfa-4a05-b900-c45b96303238 Duration: 149.53 ms Billed Duration: 313 ms Memory Size: 3538 MB Max Memory Used: 163 MB Restore Duration: 789.64 ms Billed Restore Duration: 163 ms
+
+```
+
+If this is consistent this performance is really good enough for me.
+
+One fear I have is that the connection 'primed' in the CRaC phase, may have become stale.
+
+If so, we may have additional cold start time with errors and retries as a result. Will try cold run tomorrow to confirm.
