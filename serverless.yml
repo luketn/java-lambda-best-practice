@@ -5,7 +5,7 @@ provider:
   runtime: java21
   architecture: arm64
   region: ap-southeast-2
-  memorySize: 2048
+  memorySize: 10240
   profile: personal
   vpc:
     subnetIds:
@@ -31,6 +31,7 @@ functions:
     handler: com.luketn.EntryPoint::handleRequest
     environment:
       TEST_BUCKET_NAME: luketn-java-lambda-template
+
     events:
       - httpApi:
           method: GET

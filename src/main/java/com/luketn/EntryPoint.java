@@ -52,10 +52,9 @@ public class EntryPoint implements RequestHandler<ApplicationLoadBalancerRequest
             String timingInfo;
             if (counter == 0) {
                 var approxInitTime = 450;
-                //var s3InitTime = this.s3Client.initializationTime();
-                //var totalTimeApprox = approxInitTime + s3InitTime + timeTaken;
-                //timingInfo = "Cold! Total time ~%dms (s3 init time %dms, s3 upload time %dms, approx lambda init %dms)".formatted(totalTimeApprox, s3InitTime, timeTaken, approxInitTime);
-                timingInfo = "cold";
+                var s3InitTime = this.s3Client.initializationTime();
+                var totalTimeApprox = approxInitTime + s3InitTime + timeTaken;
+                timingInfo = "Cold! Total time ~%dms (s3 init time %dms, s3 upload time %dms, approx lambda init %dms)".formatted(totalTimeApprox, s3InitTime, timeTaken, approxInitTime);
             } else {
                 timingInfo = "Warm! Total time %dms (%d%s)".formatted(timeTaken, counter, counter == 1 ? " prior invocation" : " prior invocations");
             }
@@ -82,6 +81,14 @@ public class EntryPoint implements RequestHandler<ApplicationLoadBalancerRequest
         logger.trace(coldInfo);
     }
 
+
+    public static void main(String[] args) {
+        EntryPoint entryPoint = new EntryPoint();
+        ApplicationLoadBalancerRequestEvent event = new ApplicationLoadBalancerRequestEvent();
+        event.setPath("/java-lambda-template");
+        entryPoint.handleRequest(event, null);
+        System.exit(0);
+    }
 
 }
 
