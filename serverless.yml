@@ -7,9 +7,9 @@ provider:
   region: ap-southeast-2
 #  memorySize: 7076 # 4 vCPUs
 #  memorySize: 5307 # 3 vCPUs
-#  memorySize: 3538 # 2 vCPUs
+  memorySize: 3538 # 2 vCPUs
 #  memorySize: 1769 # 1 vCPU
-  memorySize: 2048 # 2gbs
+#  memorySize: 2048 # 2gbs
   profile: personal
   vpc:
     subnetIds:
