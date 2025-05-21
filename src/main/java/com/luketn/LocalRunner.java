@@ -22,7 +22,7 @@ public class LocalRunner {
     public static void main(String[] args) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
 
-        EntryPoint entryPoint = new EntryPoint(LambdaS3Client.createAws());
+        EntryPoint entryPoint = new EntryPoint(LambdaS3Client.createLocal());
         server.createContext("/java-lambda-template", exchange -> {
             try {
                 ApplicationLoadBalancerRequestEvent requestEvent = new ApplicationLoadBalancerRequestEvent();

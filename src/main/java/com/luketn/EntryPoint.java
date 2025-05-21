@@ -21,7 +21,7 @@ public class EntryPoint implements RequestHandler<ApplicationLoadBalancerRequest
     private int counter;
 
     public EntryPoint() {
-        this(LambdaS3Client.createLocal());
+        this(LambdaS3Client.createAws());
     }
 
     public EntryPoint(LambdaS3Client s3Client) {
