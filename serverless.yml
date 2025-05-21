@@ -34,7 +34,7 @@ functions:
     handler: com.luketn.EntryPoint::handleRequest
     environment:
       TEST_BUCKET_NAME: luketn-java-lambda-template
-      JAVA_TOOL_OPTIONS: "-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
+      JAVA_TOOL_OPTIONS: "-XX:+TieredCompilation -XX:TieredStopAtLevel=0"
 
     events:
       - httpApi:

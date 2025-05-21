@@ -134,3 +134,20 @@ Timing:
 
 Conclusion: The fewer vCPUs we have, the more cost perhaps is incurred by the parallelism inherent
 to the Java ecosystem and its compilation threads.
+
+These are the numbers: 2,004ms cold start
+```
+2025-05-21T12:47:13.165Z
+INIT_START Runtime Version: java:21.v38 Runtime Version ARN: arn:aws:lambda:ap-southeast-2::runtime:81e4ff5669ca00936ae2ebcd7e3ee4b820d9f1dec101bbabbb706dc9e1481298
+2025-05-21T12:47:13.187Z
+Picked up JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+2025-05-21T12:47:14.461Z
+START RequestId: fe6c7c5c-9e3a-4a7d-95c2-4e404051f754 Version: $LATEST
+2025-05-21T12:47:15.174Z
+END RequestId: fe6c7c5c-9e3a-4a7d-95c2-4e404051f754
+2025-05-21T12:47:15.174Z
+REPORT RequestId: fe6c7c5c-9e3a-4a7d-95c2-4e404051f754 Duration: 712.55 ms Billed Duration: 713 ms Memory Size: 3538 MB Max Memory Used: 184 MB Init Duration: 1292.41 ms
+
+
+Output: Test lambda ran successfully. Cold! Total time ~2034ms (s3 init time 903ms, s3 upload time 681ms, approx lambda init 450ms)!
+```
