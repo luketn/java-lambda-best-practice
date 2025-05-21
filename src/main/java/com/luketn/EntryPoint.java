@@ -29,6 +29,7 @@ public class EntryPoint implements RequestHandler<ApplicationLoadBalancerRequest
 
     public EntryPoint(LambdaS3Client s3Client) {
         this.s3Client = s3Client;
+        this.s3InitializationTime = s3Client.initializationTime();
         this.counter = 0;
 
         Core.getGlobalContext().register(this);
