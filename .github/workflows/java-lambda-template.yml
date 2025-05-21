@@ -1,0 +1,35 @@
+name: Serverless Java Lambda Template Deployment
+on:
+  push:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '21'
+          cache: 'maven'
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Maven build, test and package
+        run: mvn --batch-mode test
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          path: ~/.npm
+          key: ${{ runner.os }}-build-cache-node-modules
+      - name: Build Package
+        run: ./build.sh
+      - name: Install Dependencies
+        run: ./install.sh
+      - name: Deploy
+        run: ./deploy.sh
