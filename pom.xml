@@ -17,38 +17,38 @@
         <org.mockito.version>5.7.0</org.mockito.version>
     </properties>
 
-    <profiles>
-        <profile>
-            <id>crt-classifier</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>software.amazon.awssdk.crt</groupId>
-                    <artifactId>aws-crt</artifactId>
-                    <version>${aws.sdk.crt.version}</version>
-                    <classifier>${os.detected.classifier}</classifier>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>crt-linux-arm64</id>
-            <activation>
-                <property>
-                    <name>crt.platform</name>
-                </property>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>software.amazon.awssdk.crt</groupId>
-                    <artifactId>aws-crt</artifactId>
-                    <version>${aws.sdk.crt.version}</version>
-                    <classifier>linux-aarch_64</classifier>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>crt-classifier</id>-->
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--            </activation>-->
+<!--            <dependencies>-->
+<!--                <dependency>-->
+<!--                    <groupId>software.amazon.awssdk.crt</groupId>-->
+<!--                    <artifactId>aws-crt</artifactId>-->
+<!--                    <version>${aws.sdk.crt.version}</version>-->
+<!--                    <classifier>${os.detected.classifier}</classifier>-->
+<!--                </dependency>-->
+<!--            </dependencies>-->
+<!--        </profile>-->
+<!--        <profile>-->
+<!--            <id>crt-linux-arm64</id>-->
+<!--            <activation>-->
+<!--                <property>-->
+<!--                    <name>crt.platform</name>-->
+<!--                </property>-->
+<!--            </activation>-->
+<!--            <dependencies>-->
+<!--                <dependency>-->
+<!--                    <groupId>software.amazon.awssdk.crt</groupId>-->
+<!--                    <artifactId>aws-crt</artifactId>-->
+<!--                    <version>${aws.sdk.crt.version}</version>-->
+<!--                    <classifier>linux-aarch_64</classifier>-->
+<!--                </dependency>-->
+<!--            </dependencies>-->
+<!--        </profile>-->
+<!--    </profiles>-->
 
     <dependencies>
         <dependency>
@@ -77,18 +77,23 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- ref: https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/lambda-optimize-starttime.html -->
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
-            <artifactId>aws-crt-client</artifactId>
+            <artifactId>url-connection-client</artifactId>
             <version>${aws.sdk.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>software.amazon.awssdk.crt</groupId>
-                    <artifactId>aws-crt</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
+        <!-- ref: https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/lambda-optimize-starttime.html -->
+<!--        <dependency>-->
+<!--            <groupId>software.amazon.awssdk</groupId>-->
+<!--            <artifactId>aws-crt-client</artifactId>-->
+<!--            <version>${aws.sdk.version}</version>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>software.amazon.awssdk.crt</groupId>-->
+<!--                    <artifactId>aws-crt</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
