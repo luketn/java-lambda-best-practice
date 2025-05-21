@@ -5,9 +5,9 @@ provider:
   runtime: java21
   architecture: arm64
   region: ap-southeast-2
-  memorySize: 7076 # 4 vCPUs
+#  memorySize: 7076 # 4 vCPUs
 #  memorySize: 5307 # 3 vCPUs
-  #memorySize: 3538 # 2 vCPUs
+  memorySize: 3538 # 2 vCPUs
   #memorySize: 1769 # 1 vCPU
   profile: personal
   vpc:
