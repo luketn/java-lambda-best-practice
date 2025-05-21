@@ -32,10 +32,10 @@ public interface LambdaS3Client {
         private S3Client intialize() {
             long start = System.currentTimeMillis();
             S3Client client = S3Client.builder()
-                    .region(Region.of(System.getenv(SdkSystemSetting.AWS_REGION.environmentVariable())))
-                    .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
-                    .httpClient(UrlConnectionHttpClient.create())
-                    .build();
+                        .region(Region.of(System.getenv(SdkSystemSetting.AWS_REGION.environmentVariable())))
+                        .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
+                        .httpClient(UrlConnectionHttpClient.create())
+                        .build();
             long end = System.currentTimeMillis();
             initializationTime = end - start;
             return client;
