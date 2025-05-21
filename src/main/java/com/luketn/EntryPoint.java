@@ -8,17 +8,20 @@ import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRespo
 import com.luketn.aws.LambdaS3Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.crac.Core;
+import org.crac.Resource;
 
 import static com.luketn.util.EnvironmentUtils.getEnv;
 
 /**
  * Lambda handler for processing orders and storing receipts in S3.
  */
-public class EntryPoint implements RequestHandler<ApplicationLoadBalancerRequestEvent, ApplicationLoadBalancerResponseEvent> {
+public class EntryPoint implements RequestHandler<ApplicationLoadBalancerRequestEvent, ApplicationLoadBalancerResponseEvent>, Resource {
     private static final Logger logger = LoggerFactory.getLogger(EntryPoint.class);
 
     private final LambdaS3Client s3Client;
     private int counter;
+    private long s3InitializationTime;
 
     public EntryPoint() {
         this(LambdaS3Client.createAws());
@@ -27,6 +30,8 @@ public class EntryPoint implements RequestHandler<ApplicationLoadBalancerRequest
     public EntryPoint(LambdaS3Client s3Client) {
         this.s3Client = s3Client;
         this.counter = 0;
+
+        Core.getGlobalContext().register(this);
     }
 
     @Override
@@ -51,10 +56,10 @@ public class EntryPoint implements RequestHandler<ApplicationLoadBalancerRequest
 
             String timingInfo;
             if (counter == 0) {
-                var approxInitTime = 450;
-                var s3InitTime = this.s3Client.initializationTime();
+                var approxInitTime = 900; // normal cold init time = ~450ms, SnapStart restore time ~900ms
+                var s3InitTime = this.s3InitializationTime;
                 var totalTimeApprox = approxInitTime + s3InitTime + timeTaken;
-                timingInfo = "Cold! Total time ~%dms (s3 init time %dms, s3 upload time %dms, approx lambda init %dms)".formatted(totalTimeApprox, s3InitTime, timeTaken, approxInitTime);
+                timingInfo = "Cold! Total time ~%dms (s3 init time %dms, s3 upload time %dms, approx lambda SnapStart restore %dms)".formatted(totalTimeApprox, s3InitTime, timeTaken, approxInitTime);
             } else {
                 timingInfo = "Warm! Total time %dms (%d%s)".formatted(timeTaken, counter, counter == 1 ? " prior invocation" : " prior invocations");
             }
@@ -90,5 +95,24 @@ public class EntryPoint implements RequestHandler<ApplicationLoadBalancerRequest
         System.exit(0);
     }
 
+    @Override
+    public void beforeCheckpoint(org.crac.Context<? extends Resource> context) {
+        this.s3InitializationTime = this.s3Client.initializationTime();
+
+        logger.info("About to create SnapStart snapshot. Took {}ms to initalize S3 client.", this.s3InitializationTime);
+
+        //Prime the lambda by running a handler event to upload to S3
+        logger.info("Priming lambda by running a handler event to upload to S3.");
+        EntryPoint entryPoint = new EntryPoint();
+        entryPoint.handleRequest(new ApplicationLoadBalancerRequestEvent(), null);
+        logger.info("Finished priming lambda by running a handler event to upload to S3.");
+    }
+
+    @Override
+    public void afterRestore(org.crac.Context<? extends Resource> context) {
+        this.counter = 0;
+        this.s3InitializationTime = 0;
+        System.out.println("Restored SnapStart snapshot.");
+    }
 }
 

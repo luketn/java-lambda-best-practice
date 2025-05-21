@@ -1,6 +1,5 @@
 package com.luketn.aws;
 
-import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.core.SdkSystemSetting;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
@@ -33,7 +32,6 @@ public interface LambdaS3Client {
             long start = System.currentTimeMillis();
             S3Client client = S3Client.builder()
                         .region(Region.of(System.getenv(SdkSystemSetting.AWS_REGION.environmentVariable())))
-                        .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
                         .httpClient(UrlConnectionHttpClient.create())
                         .build();
             long end = System.currentTimeMillis();

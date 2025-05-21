@@ -33,6 +33,7 @@ package:
 functions:
   main:
     handler: com.luketn.EntryPoint::handleRequest
+    snapStart: true
     environment:
       TEST_BUCKET_NAME: luketn-java-lambda-template
       JAVA_TOOL_OPTIONS: "-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
