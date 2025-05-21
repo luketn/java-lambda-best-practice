@@ -185,6 +185,10 @@ REPORT RequestId: 5b321b10-9dfa-4a05-b900-c45b96303238	Duration: 149.53 ms	Bille
 
 REPORT RequestId: 5b321b10-9dfa-4a05-b900-c45b96303238 Duration: 149.53 ms Billed Duration: 313 ms Memory Size: 3538 MB Max Memory Used: 163 MB Restore Duration: 789.64 ms Billed Restore Duration: 163 ms
 
+Output: 
+Test lambda ran successfully. Cold! Total time ~877ms (s3 init time 0ms, s3 upload time 77ms, approx lambda SnapStart restore 800ms)!
+..
+Test lambda ran successfully. Warm! Total time 26ms (3 prior invocations)!
 ```
 
 If this is consistent this performance is really good enough for me.
@@ -192,3 +196,15 @@ If this is consistent this performance is really good enough for me.
 One fear I have is that the connection 'primed' in the CRaC phase, may have become stale.
 
 If so, we may have additional cold start time with errors and retries as a result. Will try cold run tomorrow to confirm.
+
+#TODO: Try one last time using the CRT HTTP client  
+
+## DRAFT Conclusions
+I think I've hit on the best blend of configurations for a Java lambda using the S3 AWS SDK:
+1. Use the URL HTTP Connection over the CRT??
+2. Use tiered compilation (level 1) to limit concurrency of the compiler
+3. Use the default G1 garbage collector
+4. Use 2 vCPUs (3,538MB RAM) to allow the JVM some concurrency
+5. Use SnapStart, and fully exercise the SDK (including running an upload) before the snapshot is taken
+
+https://aws.amazon.com/blogs/compute/reducing-java-cold-starts-on-aws-lambda-functions-with-snapstart/
