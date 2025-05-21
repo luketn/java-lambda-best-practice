@@ -155,4 +155,4 @@ Output: Test lambda ran successfully. Cold! Total time ~2034ms (s3 init time 903
 (compilation 0 was awful when deployed)
 
 Maybe 1vcpu will be as efficient?
-
+A: No, still slower. Trying 2gbs.
