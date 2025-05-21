@@ -21,7 +21,7 @@ public class EntryPoint implements RequestHandler<ApplicationLoadBalancerRequest
     private int counter;
 
     public EntryPoint() {
-        this(LambdaS3Client.createAws());
+        this(null);
     }
 
     public EntryPoint(LambdaS3Client s3Client) {
@@ -42,7 +42,7 @@ public class EntryPoint implements RequestHandler<ApplicationLoadBalancerRequest
             } else {
                 log("About to upload to bucket " + bucketName);
                 var start = System.currentTimeMillis();
-                s3Client.upload(bucketName, "test", "Hello");
+//                s3Client.upload(bucketName, "test", "Hello");
                 var end = System.currentTimeMillis();
                 timeTaken = end - start;
                 log("Successfully ran demo lambda and stored an object in S3 bucket " + bucketName + " in " + (timeTaken) + "ms");
@@ -52,9 +52,10 @@ public class EntryPoint implements RequestHandler<ApplicationLoadBalancerRequest
             String timingInfo;
             if (counter == 0) {
                 var approxInitTime = 450;
-                var s3InitTime = this.s3Client.initializationTime();
-                var totalTimeApprox = approxInitTime + s3InitTime + timeTaken;
-                timingInfo = "Cold! Total time ~%dms (s3 init time %dms, s3 upload time %dms, approx lambda init %dms)".formatted(totalTimeApprox, s3InitTime, timeTaken, approxInitTime);
+                //var s3InitTime = this.s3Client.initializationTime();
+                //var totalTimeApprox = approxInitTime + s3InitTime + timeTaken;
+                //timingInfo = "Cold! Total time ~%dms (s3 init time %dms, s3 upload time %dms, approx lambda init %dms)".formatted(totalTimeApprox, s3InitTime, timeTaken, approxInitTime);
+                timingInfo = "cold";
             } else {
                 timingInfo = "Warm! Total time %dms (%d%s)".formatted(timeTaken, counter, counter == 1 ? " prior invocation" : " prior invocations");
             }
