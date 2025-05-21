@@ -135,7 +135,7 @@ Timing:
 Conclusion: The fewer vCPUs we have, the more cost perhaps is incurred by the parallelism inherent
 to the Java ecosystem and its compilation threads.
 
-These are the numbers: 2,004ms cold start
+These are the numbers with tiered compilation 1, 2 vCPU:s 2,004ms cold start
 ```
 2025-05-21T12:47:13.165Z
 INIT_START Runtime Version: java:21.v38 Runtime Version ARN: arn:aws:lambda:ap-southeast-2::runtime:81e4ff5669ca00936ae2ebcd7e3ee4b820d9f1dec101bbabbb706dc9e1481298
@@ -151,3 +151,5 @@ REPORT RequestId: fe6c7c5c-9e3a-4a7d-95c2-4e404051f754 Duration: 712.55 ms Bille
 
 Output: Test lambda ran successfully. Cold! Total time ~2034ms (s3 init time 903ms, s3 upload time 681ms, approx lambda init 450ms)!
 ```
+
+(compilation 0 was awful when deployed)
