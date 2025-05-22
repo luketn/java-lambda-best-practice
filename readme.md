@@ -197,6 +197,24 @@ One fear I have is that the connection 'primed' in the CRaC phase, may have beco
 
 If so, we may have additional cold start time with errors and retries as a result. Will try cold run tomorrow to confirm.
 
+Next day (9 hours later), confirmed cold starts are still subsecond: - 520ms cold start!
+```
+2025-05-22T00:33:09.921Z
+RESTORE_START Runtime Version: java:21.v38 Runtime Version ARN: arn:aws:lambda:ap-southeast-2::runtime:81e4ff5669ca00936ae2ebcd7e3ee4b820d9f1dec101bbabbb706dc9e1481298
+2025-05-22T00:33:10.321Z
+Restored SnapStart snapshot.
+2025-05-22T00:33:10.325Z
+RESTORE_REPORT Restore Duration: 422.92 ms
+2025-05-22T00:33:10.329Z
+START RequestId: dfdd669e-d1d5-48a7-9fbf-9247b567555a Version: 25
+2025-05-22T00:33:10.428Z
+END RequestId: dfdd669e-d1d5-48a7-9fbf-9247b567555a
+2025-05-22T00:33:10.428Z
+REPORT RequestId: dfdd669e-d1d5-48a7-9fbf-9247b567555a Duration: 98.35 ms Billed Duration: 175 ms Memory Size: 3538 MB Max Memory Used: 157 MB Restore Duration: 422.92 ms Billed Restore Duration: 76 ms
+
+Output: Test lambda ran successfully. Cold! Total time ~868ms (s3 init time 0ms, s3 upload time 68ms, approx lambda SnapStart restore 800ms)!
+```
+
 #TODO: Try one last time using the CRT HTTP client  
 
 ## DRAFT Conclusions
