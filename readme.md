@@ -326,3 +326,7 @@ benefits:
 
 All in all I was pretty pleased to get to this result and it restored (some) of my faith in the possibility of using 
 Java for lambdas.
+
+I would also guess that you could achieve similar kinds of optimisations by just having less work to do (being more efficient)
+in Java AWS SDK libraries. Hopefully a taste for that will also come along as well and we could have some tiny pure Java
+SDK implementations with very minimal dependencies in the future too.
