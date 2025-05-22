@@ -1,6 +1,6 @@
 echo "Building java lambda with binary dependencies only for ARM 64 lambda env (minimizing bundle)..."
 mvn --batch-mode \
-    -P crt-linux-arm64 \
+    -Dcrt-classifier=linux-aarch_64 \
     clean package \
     -DskipTests \
     -Dmaven.test.skip=true
