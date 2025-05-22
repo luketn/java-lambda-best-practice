@@ -57,7 +57,7 @@ public class EntryPoint implements RequestHandler<ApplicationLoadBalancerRequest
 
             String timingInfo;
             if (counter == 0) {
-                var approxInitTime = 800; // normal cold init time = ~450ms, SnapStart restore time ~900ms
+                var approxInitTime = 400; // normal cold init time = ~450ms, SnapStart restore time more variable ~400ms
                 var s3InitTime = this.s3InitializationTime;
                 var totalTimeApprox = approxInitTime + s3InitTime + timeTaken;
                 timingInfo = "Cold! Total time ~%dms (s3 init time %dms, s3 upload time %dms, approx lambda SnapStart restore %dms)".formatted(totalTimeApprox, s3InitTime, timeTaken, approxInitTime);
@@ -87,11 +87,12 @@ public class EntryPoint implements RequestHandler<ApplicationLoadBalancerRequest
         logger.trace(coldInfo);
     }
 
-
+    /**
+     * Used during profiling - start, perform an upload and shut down immediately.
+     */
     public static void main(String[] args) {
         EntryPoint entryPoint = new EntryPoint();
         ApplicationLoadBalancerRequestEvent event = new ApplicationLoadBalancerRequestEvent();
-        event.setPath("/java-lambda-template");
         entryPoint.handleRequest(event, null);
         System.exit(0);
     }
