@@ -2,6 +2,7 @@ echo "Building java lambda..."
 mvn --batch-mode \
     clean package \
     -DskipTests \
+    -Dcrt-classifier=osx-aarch_64 \
     -Dmaven.test.skip=true
 
 echo "Built shaded maven JAR:"
@@ -12,7 +13,6 @@ time \
    AWS_REGION=ap-southeast-2 \
    JAVA_TOOL_OPTIONS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1" \
    java \
-   -XX:+PrintFlagsFinal \
    -XX:StartFlightRecording=filename=recording.jfr,duration=120s,settings=local-runner-profile-intense-settings.jfc \
    -XX:+UnlockDiagnosticVMOptions \
    -XX:+DebugNonSafepoints \
