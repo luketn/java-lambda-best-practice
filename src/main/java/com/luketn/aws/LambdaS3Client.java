@@ -2,7 +2,7 @@ package com.luketn.aws;
 
 import software.amazon.awssdk.core.SdkSystemSetting;
 import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
+import software.amazon.awssdk.http.crt.AwsCrtHttpClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -32,7 +32,7 @@ public interface LambdaS3Client {
             long start = System.currentTimeMillis();
             S3Client client = S3Client.builder()
                         .region(Region.of(System.getenv(SdkSystemSetting.AWS_REGION.environmentVariable())))
-                        .httpClient(UrlConnectionHttpClient.create())
+                        .httpClient(AwsCrtHttpClient.create())
                         .build();
             long end = System.currentTimeMillis();
             initializationTime = end - start;
