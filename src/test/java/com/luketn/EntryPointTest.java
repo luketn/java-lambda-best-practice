@@ -4,13 +4,13 @@ import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerReque
 import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent;
 import com.luketn.aws.LambdaS3Client;
 import com.luketn.util.EnvironmentUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 
 import java.util.Collections;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class EntryPointTest {
@@ -81,7 +81,7 @@ public class EntryPointTest {
         }
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test()
     public void testHandleRequestWithException() {
         // Mock dependencies
         LambdaS3Client mockS3Client = mock(LambdaS3Client.class);
@@ -98,7 +98,9 @@ public class EntryPointTest {
             EntryPoint entryPoint = new EntryPoint(mockS3Client);
 
             // Invoke the handleRequest method, expecting an exception
-            entryPoint.handleRequest(requestEvent, new LocalRunner.LocalContext());
+            assertThrows(RuntimeException.class, () ->
+                    entryPoint.handleRequest(requestEvent, new LocalRunner.LocalContext())
+            );
         }
     }
 }
