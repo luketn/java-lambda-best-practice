@@ -298,15 +298,17 @@ I think I've hit on the best performing blend of configurations for a Java 21 la
    }
 ```
 
-Following all these for a lambda which uploads a 5 byte object, I'm regularly seeing:
-~500ms cold start
-~25ms warm
+Following all these for a lambda which uploads a 5 byte object, I'm regularly seeing:  
+~500ms cold start  
+~25ms warm  
+  
+End to end HTTP request latency behind an API gateway, from my home in Sydney to the ap-southeast-2 region:  
+600-700ms cold start  
+50-80ms warm  
+  
+\* worth noting that most of the restore durations are ~400ms, but some are ~700ms, still resulting in sub-second cold performance
 
-End to end HTTP request latency behind an API gateway, from my home in Sydney to the ap-southeast-2 region:
-600-700ms cold start
-50-80ms warm
-
-## Why?
+## Why use Java in Lambda?
 You might be thinking that there is a lot of complexity in configuring all this, and you'd be right. 
 
 The AWS SDK is clearly built with a lot of fat, multiple configurations and is very inefficient at load time.
